@@ -51,8 +51,9 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
   const tool = tools.find((item) => item.slug === slug);
   if (!tool) notFound();
 
+  const related = tools.filter((item) => item.category === tool.category && item.slug !== tool.slug).slice(0, 4);
   const siteUrl = "https://utilora-ten.vercel.app";
-  const schema = {
+  const schema = [{
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: tool.name,
@@ -61,7 +62,15 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
     isAccessibleForFree: true,
     description: tool.description,
     url: siteUrl + "/tools/" + tool.slug,
-  };
+  }, {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      { "@type": "Question", name: "Is " + tool.name + " free?", acceptedAnswer: { "@type": "Answer", text: "Yes. Utilora provides this tool free to use and does not require an account." } },
+      { "@type": "Question", name: "Do I need to install anything?", acceptedAnswer: { "@type": "Answer", text: "No installation is required. Use a modern web browser on a phone, tablet or computer." } },
+      { "@type": "Question", name: "Is my input uploaded?", acceptedAnswer: { "@type": "Answer", text: "The current interactive utility is designed to process its input in your browser. Avoid entering sensitive information into any online tool." } },
+    ],
+  }];
 
   return (
     <main className="shell max-w-3xl py-14 md:py-20">
@@ -94,6 +103,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
         <h3 className="mt-6 font-bold">Is my input uploaded?</h3>
         <p className="mt-2 leading-7 text-slate-600">The current interactive utility is designed to process its input in your browser. Avoid entering sensitive information into any online tool.</p>
       </section>
+      {related.length > 0 && <section className="mt-12 border-t border-slate-200 pt-8"><h2 className="font-display text-2xl font-bold">Related free tools</h2><ul className="mt-4 grid gap-3 sm:grid-cols-2">{related.map((item) => <li key={item.slug}><Link className="text-green-700 font-semibold hover:underline" href={"/tools/" + item.slug}>{item.name} →</Link><p className="mt-1 text-sm text-slate-500">{item.description}</p></li>)}</ul></section>}
       <p className="mt-12 border-t border-slate-200 pt-6 text-sm leading-6 text-slate-500">Utilora tools are provided for general productivity and informational use. Verify important outputs independently.</p>
     </main>
   );
