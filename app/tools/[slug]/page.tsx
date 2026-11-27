@@ -34,8 +34,9 @@ export function generateStaticParams() {
   return tools.map((tool) => ({ slug: tool.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const tool = tools.find((item) => item.slug === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const tool = tools.find((item) => item.slug === slug);
   if (!tool) return { title: "Tool not found | Utilora" };
   return {
     title: tool.name + " — Free Online Tool",
@@ -45,8 +46,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function ToolPage({ params }: { params: { slug: string } }) {
-  const tool = tools.find((item) => item.slug === params.slug);
+export default async function ToolPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const tool = tools.find((item) => item.slug === slug);
   if (!tool) notFound();
 
   const siteUrl = "https://utilora-ten.vercel.app";
