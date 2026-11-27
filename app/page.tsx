@@ -111,7 +111,7 @@ export default function Home(){
      </div>
      <div className="float-chip chip-fast"><span>⚡</span><div><b>Instant</b><small>Ready in a click</small></div></div>
      <div className="float-chip chip-private"><span><ShieldCheck size={19}/></span><div><b>Your data stays yours</b><small>Processed on-device</small></div></div>
-     <div className="art-sticker">50 <small>USEFUL<br/>TOOLS</small></div>
+     <div className="art-sticker">{tools.length} <small>USEFUL<br/>TOOLS</small></div>
     </div>
    </div>
    <div className="hero-bottom"><div className="shell hero-bottom-inner"><span>MADE FOR YOUR EVERYDAY</span><span className="bottom-line"></span><span>Simple tools. Smoother days.</span></div></div>
